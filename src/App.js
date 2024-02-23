@@ -1,11 +1,11 @@
 
 import './App.css';
-import ScoutForm from './Components/ScoutForm';
+import Utilities from './Components/Utilities';
 
 function App() {
   return (
     <div>
-      <ScoutForm />
+      <Utilities />
     </div>
   );
 }
