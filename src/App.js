@@ -1,10 +1,12 @@
 
 import './App.css';
-import ScoutForm from './ScoutForm';
+import ScoutForm from './Components/ScoutForm';
 
 function App() {
   return (
-    <ScoutForm/>
+    <div>
+      <ScoutForm />
+    </div>
   );
 }
 
