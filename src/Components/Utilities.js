@@ -62,7 +62,7 @@ function Utilities() {
           </Tabs>
         </Box>
         <CustomTabPanel value={utilitiesTab} index={0} >
-            Scout
+            <ScoutForm />
         </CustomTabPanel>
         <CustomTabPanel value={utilitiesTab} index={1} >
             Price
