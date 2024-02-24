@@ -1,14 +1,22 @@
 import { useState } from "react";
-import { Box, Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
+import Scouts from "../mocks/Scouts.js";
+import { Autocomplete, Box, Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
+
+
+const newScout = {
+  label: "New Scout",
+  firstName: "",
+  lastName: "",
+  ageGroup: "",
+  hasAllergy: false
+};
 
 function ScoutForm() {
 
-  const [scout, setScout] = useState({
-    firstName: "",
-    lastName: "",
-    ageGroup: "",
-    hasAllergy: false
-  });
+  const [scouts, setScouts] = useState(Scouts);
+  const [scout, setScout] = useState({...newScout});
+
+
 
   function handleChange(event) {
     const {name, value} = event.target;
@@ -17,17 +25,24 @@ function ScoutForm() {
     
   }
 
+  function handleSelect(event, scout) {
+
+    if(scout=== null) {
+      scout = {...newScout};
+    }
+
+    setScout(scout);
+    
+  }
+
   function onSubmit(event) {
     event.preventDefault();
 
     console.log(scout);
-
-    // TODO send data to database
     
   }
 
   function toggleAllergy() {
-
     setScout((prevScout) => ({...prevScout, hasAllergy: !prevScout.hasAllergy}));
     
   }
@@ -35,6 +50,17 @@ function ScoutForm() {
 
   return (
     <Box component="form" onSubmit={onSubmit} noValidate>
+      <Autocomplete
+        disablePortal
+        id="scout-select"
+        options={scouts}
+        onChange={handleSelect}
+        defaultValue={newScout}
+        sx={{ width: 300 }}
+        renderInput={(params) => <TextField {...params} label="Scout" />}
+      />
+
+      <h3>Add new Scout</h3>
       <TextField
         required
         fullWidth
@@ -65,7 +91,12 @@ function ScoutForm() {
         onChange={handleChange}
       />
 
-      <FormControlLabel control={<Checkbox checked={scout.hasAllergy} onClick={toggleAllergy} />} label="Has Food Allergy?" />
+      <FormControlLabel
+        control={
+          <Checkbox checked={scout.hasAllergy} onClick={toggleAllergy} />
+        }
+        label="Has Food Allergy?"
+      />
 
       <Button type="submit">Submit</Button>
     </Box>
