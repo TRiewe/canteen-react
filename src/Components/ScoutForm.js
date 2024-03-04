@@ -1,10 +1,10 @@
 import { useState } from "react";
 import Scouts from "../mocks/Scouts.js";
-import { Autocomplete, Box, Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
+import { Autocomplete, Box, Button, ButtonGroup, Checkbox, FormControlLabel, TextField, Typography } from "@mui/material";
 
 
 const newScout = {
-  label: "New Scout",
+  label: "",
   firstName: "",
   lastName: "",
   ageGroup: "",
@@ -15,6 +15,7 @@ function ScoutForm() {
 
   const [scouts, setScouts] = useState(Scouts);
   const [scout, setScout] = useState({...newScout});
+  const [isNewScout, setIsNewScout] = useState(true);
 
 
 
@@ -27,8 +28,11 @@ function ScoutForm() {
 
   function handleSelect(event, scout) {
 
-    if(scout=== null) {
+    if(scout === null) {
       scout = {...newScout};
+      setIsNewScout(true);
+    } else {
+      setIsNewScout(false);
     }
 
     setScout(scout);
@@ -49,7 +53,7 @@ function ScoutForm() {
 
 
   return (
-    <Box component="form" onSubmit={onSubmit} noValidate>
+    <Box >
       <Autocomplete
         disablePortal
         id="scout-select"
@@ -60,45 +64,71 @@ function ScoutForm() {
         renderInput={(params) => <TextField {...params} label="Scout" />}
       />
 
-      <h3>Add new Scout</h3>
-      <TextField
-        required
-        fullWidth
-        id="firstName"
-        label="First Name"
-        name="firstName"
-        value={scout.firstName}
-        onChange={handleChange}
-      />
+      <Typography variant="h4">
+        {isNewScout ? "Add new Scout" : "Modify Scout"}
+      </Typography>
+      <Box
+        component="form"
+        sx={{ "& .MuiTextField-root": { m: 1 } }}
+        noValidate
+        autoComplete="off"
+        onSubmit={onSubmit}
+      >
+        <TextField
+          required
+          fullWidth
+          id="firstName"
+          label="First Name"
+          name="firstName"
+          value={scout.firstName}
+          onChange={handleChange}
+        />
 
-      <TextField
-        required
-        fullWidth
-        id="lastName"
-        label="Last Name"
-        name="lastName"
-        value={scout.lastName}
-        onChange={handleChange}
-      />
+        <TextField
+          required
+          fullWidth
+          id="lastName"
+          label="Last Name"
+          name="lastName"
+          value={scout.lastName}
+          onChange={handleChange}
+        />
 
-      <TextField
-        required
-        fullWidth
-        id="ageGroup"
-        label="Age Group"
-        name="ageGroup"
-        value={scout.ageGroup}
-        onChange={handleChange}
-      />
+        <TextField
+          required
+          fullWidth
+          id="ageGroup"
+          label="Age Group"
+          name="ageGroup"
+          value={scout.ageGroup}
+          onChange={handleChange}
+        />
 
-      <FormControlLabel
-        control={
-          <Checkbox checked={scout.hasAllergy} onClick={toggleAllergy} />
-        }
-        label="Has Food Allergy?"
-      />
+        <FormControlLabel
+          control={
+            <Checkbox checked={scout.hasAllergy} onClick={toggleAllergy} />
+          }
+          label="Has Food Allergy?"
+        />
 
-      <Button type="submit">Submit</Button>
+        <ButtonGroup orientation="horizontal" size="medium" variant="outlined">
+          <Button type="submit">Submit</Button>
+          {!isNewScout && (
+            <div>
+              <Button type="submit" color="secondary">
+                Permisions
+              </Button>
+              <Button
+                type="submit"
+                onClick={(e) => console.log(e.target)}
+                color="error"
+              >
+                Delete
+              </Button>
+            </div>
+          )}
+        </ButtonGroup>
+      </Box>
     </Box>
   );
 }
